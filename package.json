@@ -1,0 +1,22 @@
+{
+  "name": "SwiftScript",
+  "version": "1.0.0",
+  "description": "SwiftScript allows you to run your swift code directly in browser by translating it into JavaScript.",
+  "main": "runner.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krzKaczor/SwiftScript"
+  },
+  "dependencies": {
+    "SwiftAST" : "krzkaczor/SwiftAST"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/krzKaczor/SwiftScript/issues"
+  },
+  "homepage": "https://github.com/krzKaczor/SwiftScript"
+}
