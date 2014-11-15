@@ -8,8 +8,8 @@ class Matrix {
     }
     
     func swap() {
-        let tmp = a;
-        self.a = b;
+        let tmp = self.a;
+        self.a = self.b;
         self.b = tmp;
     }
     

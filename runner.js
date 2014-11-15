@@ -13,10 +13,19 @@ var ast = swiftAst.ast(input);
 if (ast) {
   console.log("INPUT:");
   ast.removeScopes();
-  console.log(util.inspect(ast, { depth: null }));
+  console.log(util.inspect(ast, {depth: null}));
 
   console.log("OUTPUT:");
 
   var translated = ast.translate();
   console.log(translated);
+
+  console.log("saving to output dir...");
+  fs.writeFile("./output/es6/output.js", translated, function(err) {
+    if (err) {
+      console.error("Error: " + err);
+    } else {
+      console.log("Success!");
+    }
+  });
 }

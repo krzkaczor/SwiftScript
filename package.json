@@ -11,12 +11,17 @@
     "url": "https://github.com/krzKaczor/SwiftScript"
   },
   "dependencies": {
-    "SwiftAST" : "krzkaczor/SwiftAST"
+    "SwiftAST": "krzkaczor/SwiftAST"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/krzKaczor/SwiftScript/issues"
   },
-  "homepage": "https://github.com/krzKaczor/SwiftScript"
+  "homepage": "https://github.com/krzKaczor/SwiftScript",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-traceur": "^0.2.10"
+  }
 }
