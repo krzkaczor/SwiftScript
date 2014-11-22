@@ -2413,20 +2413,11 @@ System.get("traceur-runtime@0.0.61/src/runtime/polyfills/polyfills" + '');
 System.register("output_es6/output", [], function() {
   "use strict";
   var __moduleName = "output_es6/output";
-  (function() {
-    var Matrix = function Matrix(a, b) {
-      this.a = a;
-      this.b = b;
-    };
-    ($traceurRuntime.createClass)(Matrix, {swap: function() {
-        var tmp = this.a;
-        this.a = this.b;
-        this.b = tmp;
-      }}, {});
-    var m = new Matrix(5, 10);
-    m.swap();
-    console.log(m.a);
-    console.log(m.b);
-  })();
+  var doubles = [1, 2, 3.5];
+  println(doubles);
+  var d2 = doubles.map(function(a) {
+    return a + 100;
+  });
+  println(d2);
   return {};
 });

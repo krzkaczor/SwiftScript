@@ -2,11 +2,20 @@
   var nodes = require("SwiftAST/SwiftAST/builder/nodes");
 
   nodes.TopLevelBlock.prototype.translate = function() {
-    return "(function() {\n\n\n{0}\n\n})()".format(this.statements.map(function(s) {return s.translate()}).join("\n"));
+    return "{0}".format(this.statements.map(function(s) {return s.translate()}).join("\n"));
   };
 
   nodes.VariableDeclaration.prototype.translate = nodes.ConstantDeclaration.prototype.translate = function() {
-    return "let {0} = {1};".format(this.pattern.translate(), this.expression.translate());
+    if (this.expression)
+      return "let {0} = {1};".format(this.pattern.translate(), this.expression.translate());
+    else
+      return "let {0};".format(this.pattern.translate());
+  };
+
+  nodes.ArrayLiteral.prototype.translate = function() {
+    return "[{0}]".format((this.elements?this.elements:[]).map(function(e) {
+      return e.translate();
+    }));
   };
 
   nodes.IntegerNumberLiteral.prototype.translate = function() {
@@ -21,6 +30,10 @@
     return this.name;
   };
 
+  nodes.StringLiteral.prototype.translate = function() {
+    return '"{0}"'.format(this.value);
+  };
+
   nodes.ParenthesizedExpression.prototype.translate = function() {
     var self = this;
     if (this.isArgs) {
@@ -33,9 +46,21 @@
     }).join(",\n"));
   };
 
+  nodes.OperatorCall.prototype.translate = function() {
+    var left = this.left.translate();  //... 3 hours till presentations
+    if (left.endsWith && left.endsWith(".values")) {
+      left += "[i]";
+    }
+    var right = this.right.translate();
+    if (right.endsWith && right.endsWith(".values")) {
+      right += "[i]";
+    }
+    return "{0} {1} {2}".format(left,this.operator, right);
+  };
+
   nodes.ClassDeclaration.prototype.translate = function() {
     this.rewrite();
-    return ("class {0} {\n" +
+    return ("export class {0} {\n" +
         "{1}" +
         "}\n").format(this.name, this.declarations.map(function(decl) {
           return decl.translate();
@@ -49,6 +74,12 @@
       decl.isMethod = true;
       return decl;
     });
+  };
+
+  nodes.ClosureExpression.prototype.translate = function() {
+    return "function({0}) {1}".format(this.parameters.map(function(p) {
+      return p.translate();
+    }), this.block.translate());
   };
 
   nodes.InitializerDeclaration.prototype.translate = function() {
@@ -72,6 +103,23 @@
     }).join("\n"));
   };
 
+  nodes.ReturnStatement.prototype.translate = function() {
+    return "return {0}".format(this.expression.translate());
+  }
+
+  nodes.ForInLoop.prototype.translate = function() {
+    if (this.iteratorExpr.operator == "..<") {
+      //translate it just like common for loop
+      return "for({0}; {1} && {2};{3}++) {4}".format(
+          "var {0} = {1}".format(this.iteratorId.translate(), this.iteratorExpr.left.translate()),
+          "{0} < {1}".format(this.iteratorId.translate(), this.iteratorExpr.right.translate()),
+          "{0} >= {1}".format(this.iteratorId.translate(), this.iteratorExpr.left.translate()),
+          this.iteratorId.translate(),
+          this.block.translate()
+      );
+    }
+  };
+
   nodes.AssignmentStatement.prototype.translate = function() {
     return "{0} = {1};".format(this.leftExpression.translate(), this.rightExpression.translate());
   };
@@ -89,6 +137,9 @@
     if (this.value == "self") {
       this.value = "this";
     }
+    //if (this.scope && !this.scope.silentResolve(this.value, true)) {
+    //  this.value = "this." + this.value; //enough for hackathon XD
+    //};
   };
 
   nodes.FunctionDeclaration.prototype.translate = function() {
@@ -102,6 +153,8 @@
 
   nodes.FunctionCall.prototype.translate = function() {
     this.rewrite();
+    if (this.callee.value == "Matrix")  //3.5h till presentations...
+      this.callee.type.isConstructor = true;
     if (this.callee.type && this.callee.type.isConstructor)
       return "new {0}{1}".format(this.value, this.args.translate());
     else
@@ -110,7 +163,6 @@
 
   nodes.FunctionCall.prototype.rewrite = function() {
     this.args.isArgs = true;
-
   }
 
 })();

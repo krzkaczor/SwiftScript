@@ -8,8 +8,8 @@ class Matrix {
     }
     
     func swap() {
-        let tmp = self.a;
-        self.a = self.b;
+        let tmp = a;
+        self.a = b;
         self.b = tmp;
     }
     
@@ -17,3 +17,5 @@ class Matrix {
 
 let m = Matrix(a:5,b:10);
 m.swap();
+print(m.a);
+print(m.b);
