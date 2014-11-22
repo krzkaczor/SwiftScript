@@ -2413,20 +2413,31 @@ System.get("traceur-runtime@0.0.61/src/runtime/polyfills/polyfills" + '');
 System.register("output_es6/output", [], function() {
   "use strict";
   var __moduleName = "output_es6/output";
-  (function() {
-    var Matrix = function Matrix(a, b) {
-      this.a = a;
-      this.b = b;
-    };
-    ($traceurRuntime.createClass)(Matrix, {swap: function() {
-        var tmp = this.a;
-        this.a = this.b;
-        this.b = tmp;
-      }}, {});
-    var m = new Matrix(5, 10);
-    m.swap();
-    console.log(m.a);
-    console.log(m.b);
-  })();
-  return {};
+  var Matrix = function Matrix(cols, rows, values) {
+    this.cols = cols;
+    this.rows = rows;
+    this.values = values;
+  };
+  var $Matrix = Matrix;
+  ($traceurRuntime.createClass)(Matrix, {
+    add: function(other) {
+      var result = [];
+      var length = this.values.length;
+      for (var i = 0; i < length && i >= 0; i++) {
+        result.append(this.values[i] + other.values[i]);
+      }
+      return new $Matrix(this.cols, this.rows, result);
+    },
+    subtract: function(other) {
+      var result = [];
+      var length = this.values.length;
+      for (var i = 0; i < length && i >= 0; i++) {
+        result.append(this.values[i] - other.values[i]);
+      }
+      return new $Matrix(this.cols, this.rows, result);
+    }
+  }, {});
+  return {get Matrix() {
+      return Matrix;
+    }};
 });

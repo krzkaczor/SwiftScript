@@ -1,22 +1,29 @@
-(function() {
-
-
-class Matrix {
-constructor(a,b) {
-this.a = a;
-this.b = b;
+export class Matrix {
+constructor(cols,rows,values) {
+this.cols = cols;
+this.rows = rows;
+this.values = values;
 }
 
 
-swap() {
-let tmp = this.a;
-this.a = this.b;
-this.b = tmp;
-}
+add(other) {
+let result = [];
+let length = this.values.length;
+for(var i = 0; i < length && i >= 0;i++) {
+result.append(this.values[i] + other.values[i])
 }
 
-let m = new Matrix(5,10);
-m.swap()
-console.log(m.a);
-console.log(m.b);
-})()
+return new Matrix(this.cols,this.rows,result)
+}
+
+
+subtract(other) {
+let result = [];
+let length = this.values.length;
+for(var i = 0; i < length && i >= 0;i++) {
+result.append(this.values[i] - other.values[i])
+}
+
+return new Matrix(this.cols,this.rows,result)
+}
+}

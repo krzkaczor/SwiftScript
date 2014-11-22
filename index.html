@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="output/es5/output.js"></script>
+    <script src="SwiftScript/swiftScriptRuntime.js"></script>
+    <script>
+        var Matrix = System.get('output_es6/output').Matrix;
+    </script>
+    <title></title>
+</head>
+<body>
+    <form name="frm1">
+        <div>
+            <input type="text" name="m11" value="5">
+            <input type="text" name="m12" value="3">
+            <input type="text" name="m13" value="2"></br>
+            <input type="text" name="m14" value="1">
+            <input type="text" name="m15" value="2">
+            <input type="text" name="m16" value="4"></br>
+            <input type="text" name="m17" value="0">
+            <input type="text" name="m18" value="9">
+            <input type="text" name="m19" value="8"></br>
+        </div>
+        <select name="action">
+            <option value="plus">Plus</option>
+            <option value="minus">Minus</option>
+        </select>
+        <div>
+            <input type="text" name="m21" value="7">
+            <input type="text" name="m22" value="5">
+            <input type="text" name="m23" value="1"></br>
+            <input type="text" name="m24" value="6">
+            <input type="text" name="m25" value="7">
+            <input type="text" name="m26" value="8"></br>
+            <input type="text" name="m27" value="4">
+            <input type="text" name="m28" value="6">
+            <input type="text" name="m29" value="7"></br>
+        </div>
+        <input type="button" value="calculate!"onclick="return submitClicked();" />
+
+        <div id="result">
+        </div>
+        <script type="text/javascript">
+            function submitClicked() {
+                var m11 = parseInt(frm1.elements["m11"].value);
+                var m12 = parseInt(frm1.elements["m12"].value);
+                var m13 = parseInt(frm1.elements["m13"].value);
+                var m14 = parseInt(frm1.elements["m14"].value);
+                var m15 = parseInt(frm1.elements["m15"].value);
+                var m16 = parseInt(frm1.elements["m16"].value);
+                var m17 = parseInt(frm1.elements["m17"].value);
+                var m18 = parseInt(frm1.elements["m18"].value);
+                var m19 = parseInt(frm1.elements["m19"].value);
+                var m1 = new Matrix(3,3,[m11, m12, m13,m14, m15, m16,m17, m18, m19]);
+                console.log(m1);
+
+                var m21 = parseInt(frm1.elements["m21"].value);
+                var m22 = parseInt(frm1.elements["m22"].value);
+                var m23 = parseInt(frm1.elements["m23"].value);
+                var m24 = parseInt(frm1.elements["m24"].value);
+                var m25 = parseInt(frm1.elements["m25"].value);
+                var m26 = parseInt(frm1.elements["m26"].value);
+                var m27 = parseInt(frm1.elements["m27"].value);
+                var m28 = parseInt(frm1.elements["m28"].value);
+                var m29 = parseInt(frm1.elements["m29"].value);
+                var m2 = new Matrix(3,3,[m21, m22, m23,m24, m25, m26,m27, m28, m29]);
+                console.log(m2);
+
+                if (frm1.elements["action"].selectedIndex == 0)
+                    var result = m1.add(m2);
+                else
+                    var result = m1.subtract(m2);
+
+                var output = '<table width="200">';
+                for (var i = 0;i < 3;i++) {
+                    output += "<tr>";
+                    for(var j = 0; j < 3;j++) {
+                        output += "<td>" + result.values[i*3+j] + "</td>";
+                    }
+                    output += "</tr>";
+                }
+                output += "</table>";
+                document.getElementById("result").innerHTML = output;
+            }
+        </script>
+    </form>
+</body>
+</html>
